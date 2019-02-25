@@ -1,0 +1,28 @@
+.Huge {
+    font-size: 40px;
+}
+
+.col-xs-9 {
+    float: left;
+}
+
+.Fa5x {
+    font-size: 4em;
+}
+
+.PanelFooter {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.PullLeft {
+    float: left!important;
+}
+
+.PullRight {
+    float: right!important;
+}
+

@@ -1,0 +1,63 @@
+.App {
+  margin-left: 30px;
+  margin-top: 25px;
+  margin-right: 30px;
+}
+
+.Panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.PanelPrimary {
+  border-color: #337ab7;
+}
+
+.PanelGreen {
+  border-color: #5cb85c;
+}
+
+.PanelRed {
+  border-color: #d9534f;
+}
+
+.PanelPrimary>.PanelHeading {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+
+.PanelGreen>.PanelHeading {
+  border-color: #5cb85c;
+  color: #fff;
+  background-color: #5cb85c;
+}
+
+.PanelRed .PanelHeading {
+  border-color: #d9534f;
+  color: #fff;
+  background-color: #d9534f;
+}
+
+.PanelHeading {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.PanelPrimary a {
+  color: #337ab7;;
+}
+
+.PanelGreen a {
+  color: #5cb85c;
+}
+
+.PanelRed a {
+  color: #d9534f;
+}

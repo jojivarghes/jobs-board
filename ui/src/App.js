@@ -4,8 +4,8 @@ import './themeBootstrap.css';
 import JobStatus from './components/JobStatus/JobStatus';
 import Chart from './components/Chart/Chart';
 import DataTable1 from './components/DataTable/DataTable';
-import {FaArrowAltCircleLeft, FaChevronLeft, FaChevronRight,FaArrowDown,FaCog,FaTachometerAlt,FaWrench,FaFolder,FaUser} from 'react-icons/fa'
-
+import {RangeDatePicker} from '@y0c/react-datepicker';
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
 
 class App extends Component {
   constructor(props){
@@ -28,79 +28,20 @@ toggleMenu() {
     const arrGreen1 = arrGreen.join(' ');
     const arrRed = [classes.Panel, classes.PanelRed];
     const arrRed1 = arrRed.join(' ');
+    const onChange = title => (...args) => console.log(title, args);
     return (
-<span id="page-top">
+<div className={classes.App}>
         {/* Page Wrapper */}
-        <div id="wrapper">
+        <div>
           {/* Sidebar */}
-          <h1>{this.state.menuCollapsed}</h1>
-          <ul className={"navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " + this.state.menuCollapsed} id="accordionSidebar">
-            {/* Sidebar - Brand */}
-            <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-              <div className="sidebar-brand-icon rotate-n-15">
-                <i className="fas fa-laugh-wink" />
-              </div>
-              <div className="sidebar-brand-text mx-3">Job Status <sup>Dashboard</sup></div>
-            </a>
-            {/* Divider */}
-            <hr className="sidebar-divider my-0" />
-            {/* Nav Item - Dashboard */}
-            <li className="nav-item active">
-              <a className="nav-link" href="index.html">
-                {/* <i className="fas fa-fw fa-tachometer-alt" /> */}
-                <FaTachometerAlt></FaTachometerAlt>
-                <span>    Dashboard</span></a>
-            </li>
-            {/* Divider */}
-            <hr className="sidebar-divider" />
-            {/* Heading */}
-            <div className="sidebar-heading">
-              Interface
-            </div>
-            {/* Nav Item - Pages Collapse Menu */}
-            <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <FaCog></FaCog>
-                <span>    Application Settings</span>
-              </a>
-            </li>
-            {/* Nav Item - Utilities Collapse Menu */}
-            <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <FaWrench></FaWrench>
-                <span> Website Settings</span>
-              </a>
-            </li>
-            {/* Divider */}
-            <hr className="sidebar-divider" />
-            {/* Heading */}
-            <div className="sidebar-heading">
-              Support
-            </div>
-            {/* Nav Item - Pages Collapse Menu */}
-            <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                {/* <i className="fas fa-fw fa-folder" /> */}
-                <FaUser></FaUser>
-                <span>    Contact Us</span>
-              </a>
-            </li>
-            {/* Divider */}
-            <hr className="sidebar-divider d-none d-md-block" />
-            {/* Sidebar Toggler (Sidebar) */}
-            <div className="text-center d-none d-md-inline white-color">
-            {/* {/* <i class="far fa-arrow-alt-circle-left"></i> */}
-            <FaArrowAltCircleLeft onClick={this.toggleMenu.bind(this)}></FaArrowAltCircleLeft>
-            {/* <button className="rounded-circle border-0" id="sidebarToggle" /> */}
-            </div>
-          </ul>
+         
           {/* End of Sidebar */}
           {/* Content Wrapper */}
           <div id="content-wrapper" className="d-flex flex-column">
             {/* Main Content */}
             <div id="content">
               {/* Topbar */}
-              <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+              <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style={{width:'100%',height:'10%'}}>
                 {/* Sidebar Toggle (Topbar) */}
                 <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
                   <i className="fa fa-bars" />
@@ -153,6 +94,7 @@ toggleMenu() {
                 {/* Page Heading */}
                 <div className="d-sm-flex align-items-center justify-content-between mb-4">
                   <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
+                  <RangeDatePicker startPlaceholder="Start Date" endPlaceholder="End Date" onChange={onChange("Range DatePicker")} />
                   <a href="#" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
                 </div>
                 {/* Content Row */}
@@ -306,9 +248,7 @@ toggleMenu() {
         {/* Custom scripts for all pages*/}
         {/* Page level plugins */}
         {/* Page level custom scripts */}
-        <div className={classes.App}>
       </div>
-      </span>
       
     );
   }

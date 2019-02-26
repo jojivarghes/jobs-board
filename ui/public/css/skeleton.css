@@ -186,7 +186,9 @@ input[type="button"] {
   border-radius: 4px;
   border: 1px solid #bbb;
   cursor: pointer;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  margin-top: 10px !important;
+  margin-left: 10px !important;   }
 .button:hover,
 button:hover,
 input[type="submit"]:hover,

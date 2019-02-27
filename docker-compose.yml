@@ -13,8 +13,6 @@ services:
     build: .
     command: >
       bash -c " python3.6 manage.py makemigrations jb_dashboard
-      && python3.6 manage.py makemigrations jb_settings
-      && python3.6 manage.py migrate
       && python3.6 manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code

@@ -1,4 +1,5 @@
 Django==2.1.7
 djangorestframework==3.9.1
-mysqlclient==1.4.2.post1
+pyodbc
+mysqlclient
 pytz==2018.9

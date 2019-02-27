@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class Job_History(models.Model):
+    JobId = models.CharField(max_length=200)
+

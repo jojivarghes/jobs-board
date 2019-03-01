@@ -1,46 +1,39 @@
 import React from 'react'
 
 export class StepFour extends React.Component {
-  constructor () {
-    super()
-    this.state = { 
-      checked: '' 
-    }
-    this.handleCheckedChanged = this.handleCheckedChanged.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ''
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleCheckedChanged (event) {
-    this.setState({checked: event.target.checked})
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('config button');
+    event.preventDefault();
   }
 
   render () {
     return (
       <div>
-        <div className='row'>
-          <div className='ten columns terms'>
-            <span>By clicking "Accept" I agree that:</span>
-            <ul className='docs-terms'>
-              <li>
-                I have read and accepted the <a href='#'>User Agreement</a>
-              </li>
-              <li>
-                I have read and accepted the <a href='#'>Privacy Policy</a>
-              </li>
-              <li>I am at least 18 years old</li>
-            </ul>
-            <label>
-              <input
-                type='checkbox'
-                //   defaultChecked={this.state.checked}
-                checked={this.state.checked}
-                onChange={this.handleCheckedChanged}
-                autoFocus
-              />
-              <span> Accept </span>{' '}
-            </label>
-          </div>
-        </div>
+      <div className="row">
+        <textarea className="u-full-width" 
+          style={{minHeight:'200px', height:'auto', marginLeft:'10px', width:'70%'}} 
+          value={this.state.value} 
+          onChange={this.handleChange} 
+          cols={40} 
+          rows={10}
+          autoFocus />
       </div>
-    )
+      <button type="button" style={{float: 'left'}} onClick={this.handleSubmit}>Config</button>
+      </div>
+    );
   }
 }

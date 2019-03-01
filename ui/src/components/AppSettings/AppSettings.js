@@ -49,7 +49,17 @@ class AppSettings extends React.Component {
     
       handleChange = (event) => {
         this.setState({selectedOption: event.target.value});
-        console.log(this.state.selectedOption);
+        setTimeout(()=>{
+          for(var i=0;i<this.state.options.length;i++){
+            if(this.state.selectedOption === this.state.options[i].name){
+              this.setState({port: this.state.options[i].port});
+              break;
+            }
+            else {
+              this.setState({port: ''})
+            }
+          }
+        },500)
       }
 
       render(){

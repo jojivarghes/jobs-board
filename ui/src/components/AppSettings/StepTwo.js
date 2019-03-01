@@ -12,7 +12,6 @@ export class StepTwo extends React.Component {
   render () {
     return (
       <div id="wrapper">
-        <div></div>
         <DragNDrop />
       </div>
     )

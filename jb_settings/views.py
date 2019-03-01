@@ -1,12 +1,19 @@
 from django.http import HttpResponse
-import json
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
-def sources(request):
-    if request.method == "POST":
-        return HttpResponse("POST sources")
-    else:
+import json
+import random
+from jb_settings.utils import save_source, get_source_by_id
+
+# URL : /api/sources
+@method_decorator(csrf_exempt, name='dispatch')
+class IndexView(View):
+
+    def get(self, request):
         res = {
-            "sources":[
+            "sources": [
                 {
                     "port": 1336,
                     "name": "mysql"
@@ -16,7 +23,7 @@ def sources(request):
                     "name": "mssql"
                 },
                 {
-                    "port": 1536,
+                    "port": 1636,
                     "name": "jenkins"
                 }
 
@@ -24,19 +31,31 @@ def sources(request):
         }
         return HttpResponse(json.dumps(res))
 
+    def post(self, request):
+        req_body = json.loads(request.body)
+        req_data = req_body.get('data','oops')
+        source_id = save_source(req_data)
+        return HttpResponse(json.dumps({"source_id":source_id}))
 
-def sources_config(request, id):
-    if request.method == "GET":
-        config = {
-            "user":"user",
-            "host":"localhost",
-            "password":"XXX",
-            "id":id,
-            "port":1336
-        }
-        return HttpResponse(json.dumps(config))
-    else:
-        return HttpResponse("Only GET allowed")
+class SourcesView(View):
+    def get(self, request, id):
+        source_config = get_source_by_id(id)
+        if source_config:
+            return HttpResponse(json.dumps(source_config))
+        else:
+            return HttpResponse("No source is found for ID:"+str(id))
+
+
+# @method_decorator(csrf_exempt, name='dispatch')
+# class SourceMapping(View):
+#     def get(self, request, id):
+#         pass
+#
+#     def post(self, request, id):
+#         req_body = json.loads(request.body)
+#         req_data = req_body.get('data', 'oops')
+#         source_id = save_source(req_data)
+#         return HttpResponse(json.dumps({"source_id": source_id}))
 
 def list_of_tables(request, id):
     if request.method == "GET":

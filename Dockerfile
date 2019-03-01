@@ -16,6 +16,10 @@ RUN python3.6 -m pip install pip --upgrade && \
 
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /jobDashboard
+RUN mkdir /conf
+RUN touch /conf/source.json
+RUN chmod 777 /conf/source.json
+RUN echo '[]' > /conf/source.json
 WORKDIR /jobDashboard
 COPY requirements.txt /jobDashboard/
 

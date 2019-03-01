@@ -3,3 +3,5 @@ djangorestframework==3.9.1
 pyodbc
 mysqlclient
 pytz==2018.9
+sqlalchemy
+django-cors-headers

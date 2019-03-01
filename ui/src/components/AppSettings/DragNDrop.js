@@ -35,7 +35,19 @@ const droppableStyle = {
     width: '250px',
     minHeight: '400px',
     height: 'auto',
-    margin: '0px 20px'
+    margin: '0px 20px',
+    paddingTop:'10px',
+};
+
+const droppableStyle1 = {
+    backgroundColor: '#555',
+    width: '250px',
+    minHeight: '100px',
+    height: 'auto',
+    margin: '0px 20px',
+    paddingTop:'10px',
+    paddingBottom:'5px',
+    marginBottom: '20px'
 };
 
 const Table = styled.div`
@@ -43,7 +55,17 @@ const Table = styled.div`
     width: '250px',
     min-height: '400px',
     height: 'auto',
-    margin: '0px 20px'
+    margin: '0px 20px',
+    paddingTop:'10px'
+`;
+
+const NotDraggable = styled.div`
+    background-color: '#555',
+    width: '250px',
+    min-height: '400px',
+    height: 'auto',
+    margin: '0px 20px',
+    paddingTop:'10px'
 `;
 
 export default class DragNDrop extends React.Component{
@@ -54,28 +76,57 @@ export default class DragNDrop extends React.Component{
     }
 
     button1Handler (event) {
-        alert("button1");
+        alert("Table1");
     }
     
     button2Handler (event) {
-        alert("button2");
+        alert("Table2");
     }
     
     render(){
         return (
             <Wrapper>
-                <Table style={droppableStyle}>
-                <Anchor onClick={this.button1Handler}>Button 1</Anchor>
-                <Anchor onClick={this.button2Handler}>Button 2</Anchor>
-                </Table>
-                <Droppable id="dr1" style={droppableStyle}>
-                    <Draggable id="item1" style={{margin:'8px'}}><Item>Some Text</Item></Draggable>
-                    <Draggable id="item2" style={{margin:'8px'}}><Item>Some Other Text</Item></Draggable>
-                </Droppable>
-                <Droppable id="dr2" style={droppableStyle}>
-                    <Draggable id="item3" style={{margin:'8px'}}><Item>Some Text1</Item></Draggable>
-                    <Draggable id="item4" style={{margin:'8px'}}><Item>Some Other Text1</Item></Draggable>
-                </Droppable>
+                <div>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'115px'}}>Tables</span>
+                    <Table style={droppableStyle}>
+                        <Anchor onClick={this.button1Handler}>Table 1</Anchor>
+                        <Anchor onClick={this.button2Handler}>Table 2</Anchor>
+                    </Table>
+                </div>
+                <div>
+                <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>Columns</span>
+                    <Droppable id="dr1" style={droppableStyle}>
+                        <Draggable id="item1" style={{margin:'8px'}}><Item>Column1</Item></Draggable>
+                        <Draggable id="item2" style={{margin:'8px'}}><Item>Column2</Item></Draggable>
+                        <Draggable id="item4" style={{margin:'8px'}}><Item>Column3</Item></Draggable>
+                        <Draggable id="item6" style={{margin:'8px'}}><Item>Column4</Item></Draggable>
+                        <Draggable id="item8" style={{margin:'8px'}}><Item>Column5</Item></Draggable>
+                        <Draggable id="item10" style={{margin:'8px'}}><Item>Column6</Item></Draggable>
+                        <Draggable id="item12" style={{margin:'8px'}}><Item>Column7</Item></Draggable>
+                    </Droppable>
+                </div>
+                <div>
+                    <Droppable id="dr2" style={droppableStyle1}>
+                        <NotDraggable id="item3" style={{margin:'8px'}}><Item>job_id</Item></NotDraggable>
+                       {/* <Draggable id="item4" style={{margin:'8px'}}><Item>Some Other Text1</Item></Draggable>*/}
+                    </Droppable>
+                    <Droppable id="dr3" style={droppableStyle1}>
+                        <NotDraggable id="item5" style={{margin:'8px'}}><Item>start</Item></NotDraggable>
+                        {/*<Draggable id="item6" style={{margin:'8px'}}><Item>Some Other Text2</Item></Draggable>*/}
+                    </Droppable>
+                    <Droppable id="dr4" style={droppableStyle1}>
+                        <NotDraggable id="item7" style={{margin:'8px'}}><Item>end</Item></NotDraggable>
+                       {/* <Draggable id="item8" style={{margin:'8px'}}><Item>Some Other Text3</Item></Draggable>*/}
+                    </Droppable>
+                    <Droppable id="dr5" style={droppableStyle1}>
+                        <NotDraggable id="item9" style={{margin:'8px'}}><Item>status</Item></NotDraggable>
+                        {/*<Draggable id="item10" style={{margin:'8px'}}><Item>Some Other Text4</Item></Draggable>*/}
+                    </Droppable>
+                    <Droppable id="dr6" style={droppableStyle1}>
+                        <NotDraggable id="item11" style={{margin:'8px'}}><Item>comments</Item></NotDraggable>
+                        {/*<Draggable id="item12" style={{margin:'8px'}}><Item>Some Other Text5</Item></Draggable>*/}
+                    </Droppable>
+                </div>
             </Wrapper>
         );
     }

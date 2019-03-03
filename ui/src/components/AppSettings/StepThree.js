@@ -8,15 +8,15 @@ export class StepThree extends React.Component {
       rows: [
         {
           name: 'Select',
-          control: <input type="text" placeholder="Select Query" style={{width:'100%'}} value={this.props.data} autoFocus disabled/>,
+          control: <input type="text" placeholder="Select Query" style={{width:'100%'}} autoFocus/>,
         },
         {
           name: 'Where',
-          control: <input type="text" placeholder="Where Clause" style={{width:'100%'}} value={this.props.whereTxt} onChange={this.props.handleWhereChange}/>,
+          control: <input type="text" placeholder="Where Clause" style={{width:'100%'}}/>,
         },
         {
           name: 'Join',
-          control: <input type="text" placeholder="Join Tables" style={{width:'100%'}} value={this.props.joinTxt} onChange={this.props.handleJoinChange}/>,
+          control: <input type="text" placeholder="Join Tables" style={{width:'100%'}}/>,
         }
       ]
     };

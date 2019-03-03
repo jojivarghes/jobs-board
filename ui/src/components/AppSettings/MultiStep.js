@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
-import axios from 'axios';
-// import Alert from 'react-s-alert';
+
 const getNavStyles = (indx, length) => {
   let styles = []
   for (let i = 0; i < length; i++) {
@@ -39,33 +38,7 @@ export default function MultiStep(props) {
   const [compState, setComp] = useState(0)
   const [buttonsState, setButtons] = useState(getButtonsState(0, props.steps.length))
   
-  // const [tables, settables] = useState([])
   function setStepState(indx) {
-    if(indx === 1) {
-      console.log(props.myData)
-      axios.post('https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources', props.myData)
-      .then((response) => {
-        axios.get('https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources/1/tables')
-        .then((response) => {
-          console.log(response.data)
-          // this.setState({tables:response.data});
-          // settables(response.data);
-          props.setTable(response.data);
-          setWizardPage(indx);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    } else {
-      setWizardPage(indx)
-    }
-  }
-
-  function setWizardPage(indx) {
     setStyles(getNavStyles(indx, props.steps.length))
     setComp(indx < props.steps.length? indx : compState)
     setButtons(getButtonsState(indx, props.steps.length))
@@ -104,15 +77,16 @@ export default function MultiStep(props) {
           {renderSteps()}
         </ol>
         {props.steps[compState].component}
-        <div style={props.showNavigation ? {} : { pointerEvents: 'none', background: 'gray' }}>
-          <button className="btn btn-primary"
-            style={buttonsState.showPreviousBtn ? {} : { pointerEvents: 'none', background: 'gray' }}
+        <div style={props.showNavigation ? {} : { display: 'none' }}>
+          <button
+            style={buttonsState.showPreviousBtn ? {} : { display: 'none' }}
             onClick={previous}
           >
             Previous
           </button>
-          <button className="btn btn-primary"
-            style={buttonsState.showNextBtn ? {} : { pointerEvents: 'none', background: 'gray' }}
+
+          <button
+            style={buttonsState.showNextBtn ? {} : { display: 'none' }}
             onClick={next}
           >
             Next

@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Draggable from './Draggable';
 import Droppable from './Droppable';
-import axios from 'axios';
-import Alert from 'react-s-alert';
 
 const Wrapper = styled.div`
     //width: 100%;
@@ -30,113 +28,108 @@ const Anchor = styled.a`
     margin: 10px 20px;
     border-radius: 3px;
     cursor: pointer;
-    background: cornflowerblue;
-    color: white!important;
 `;
 
 const droppableStyle = {
-    backgroundColor: '#f8f9fc',
+    backgroundColor: '#555',
     width: '250px',
-    minHeight: '500px',
+    minHeight: '400px',
     height: 'auto',
     margin: '0px 20px',
     paddingTop:'10px',
-    border: 'black 1px solid'
 };
 
 const droppableStyle1 = {
-    backgroundColor: '#f8f9fc',
+    backgroundColor: '#555',
     width: '250px',
     height: '50px',
     //height: 'auto',
     margin: '0px 20px',
     paddingTop:'3px',
    // paddingBottom:'5px',
-    marginBottom: '20px',
-    border: 'black 1px dashed'
+    marginBottom: '20px'
 };
 
 const Table = styled.div`
-    background-color: '#f8f9fc',
+    background-color: '#555',
     width: '250px',
     min-height: '400px',
     height: 'auto',
     margin: '0px 20px',
-    paddingTop:'10px',
-    border: 'black 1px dashed'
+    paddingTop:'10px'
+`;
+
+const NotDraggable = styled.div`
+    background-color: '#555',
+    width: '250px',
+    min-height: '400px',
+    height: 'auto',
+    margin: '0px 20px',
+    paddingTop:'10px'
 `;
 
 export default class DragNDrop extends React.Component{
-    state= {columns: {tableName: "", columns: []}};
     constructor () {
         super()
         this.button1Handler = this.button1Handler.bind(this);
         this.button2Handler = this.button2Handler.bind(this);
     }
 
-    button1Handler (tableName) {
-        axios.get("https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources/{id}/tables/" +tableName+"/columns")
-        .then((response) => {
-          let colObj = {tableName: tableName, columns: response.data};
-          this.setState({columns:colObj});
-        })
-        .catch((error) => {
-          
-          Alert.error('No Columns in this table', {
-            position: 'top-right',
-            effect: 'scale',
-            onShow: function () {
-                console.log('aye!')
-            },
-            beep: false,
-            timeout: 'none',
-            offset: 100
-        });
-        })
+    button1Handler (event) {
+        alert("Table1");
     }
     
     button2Handler (event) {
         alert("Table2");
     }
-
+    
     render(){
-        let setMapJob = (key, value) => {
-            this.props.handlePageTwoData(key, value);
-            // this.setState({[key]:value});
-        }
         return (
             <Wrapper>
                 <div>
-                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'115px', color: 'darkblue'}}>Tables</span>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'115px'}}>Tables</span>
                     <Table style={droppableStyle}>
-                        {this.props.table.map((item) => 
-                            <Anchor key={item} onClick={()=>this.button1Handler(item)}>{item}</Anchor>
-                        )}
+                        <Anchor onClick={this.button1Handler}>Table 1</Anchor>
+                        <Anchor onClick={this.button2Handler}>Table 2</Anchor>
                     </Table>
                 </div>
                 <div>
-                <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px', color: 'darkblue'}}>Columns</span>
-                    <Droppable className="droppableBlueDiv" id="dr1" style={droppableStyle}>
-                        {this.state.columns.columns.map((item, indx) => 
-                            <Draggable key={'item'+indx} id={'item'+indx} style={{margin:'8px', cursor: 'grab'}} currentitem={this.state.columns.tableName + '.' + item}><Item>{item}</Item></Draggable>  
-                        )}
+                <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>Columns</span>
+                    <Droppable id="dr1" style={droppableStyle}>
+                        <Draggable id="item1" style={{margin:'8px'}}><Item>Column1</Item></Draggable>
+                        <Draggable id="item2" style={{margin:'8px'}}><Item>Column2</Item></Draggable>
+                        <Draggable id="item4" style={{margin:'8px'}}><Item>Column3</Item></Draggable>
+                        <Draggable id="item6" style={{margin:'8px'}}><Item>Column4</Item></Draggable>
+                        <Draggable id="item8" style={{margin:'8px'}}><Item>Column5</Item></Draggable>
+                        <Draggable id="item10" style={{margin:'8px'}}><Item>Column6</Item></Draggable>
+                        <Draggable id="item12" style={{margin:'8px'}}><Item>Column7</Item></Draggable>
                     </Droppable>
                 </div>
-                <div style={{display: 'grid'}}>
-                <span style={{fontSize: '20px',fontWeight:'bold', justifySelf: 'center', color: 'darkblue'}}>Job ID</span>
-                    <Droppable id="dr2" name="job_id" setMapJob={setMapJob} className="droppableDiv" style={droppableStyle1}>
+                <div>
+                <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>job_id</span>
+                    <Droppable id="dr2" style={droppableStyle1}>
+                       {/* <NotDraggable id="item3" style={{margin:'8px'}}><Item>job_id</Item></NotDraggable>*/}
+                       {/* <Draggable id="item4" style={{margin:'8px'}}><Item>Some Other Text1</Item></Draggable>*/}
                     </Droppable>
-                    <span style={{fontSize: '20px',fontWeight:'bold', justifySelf: 'center', color: 'darkblue'}}>Start Date & Time</span>
-                    <Droppable id="dr3" name="start_time" className="droppableDiv" setMapJob={setMapJob} style={droppableStyle1}>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>start</span>
+                    <Droppable id="dr3" style={droppableStyle1}>
+                        {/*<NotDraggable id="item5" style={{margin:'8px'}}><Item>start</Item></NotDraggable>*/}
+                        {/*<Draggable id="item6" style={{margin:'8px'}}><Item>Some Other Text2</Item></Draggable>*/}
                     </Droppable>
-                    <span style={{fontSize: '20px',fontWeight:'bold', justifySelf: 'center', color: 'darkblue'}}>End Date & Time</span>
-                    <Droppable id="dr4" name="end_time" setMapJob={setMapJob} className="droppableDiv" style={droppableStyle1}>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>end</span>
+                    <Droppable id="dr4" style={droppableStyle1}>
+                       {/* <NotDraggable id="item7" style={{margin:'8px'}}><Item>end</Item></NotDraggable>*/}
+                       {/* <Draggable id="item8" style={{margin:'8px'}}><Item>Some Other Text3</Item></Draggable>*/}
                     </Droppable>
-                    <span style={{fontSize: '20px',fontWeight:'bold', justifySelf: 'center', color: 'darkblue'}}>Status</span>
-                    <Droppable id="dr5" name="status" setMapJob={setMapJob} className="droppableDiv" style={droppableStyle1}>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>status</span>
+                    <Droppable id="dr5" style={droppableStyle1}>
+                       {/* <NotDraggable id="item9" style={{margin:'8px'}}><Item>status</Item></NotDraggable>*/}
+                        {/*<Draggable id="item10" style={{margin:'8px'}}><Item>Some Other Text4</Item></Draggable>*/}
                     </Droppable>
-                    <span style={{fontSize: '20px',fontWeight:'bold', justifySelf: 'center', color: 'darkblue'}}>Comments</span>
-                    <Droppable id="dr6" name="comments" setMapJob={setMapJob} className="droppableDiv" style={droppableStyle1}>
+                    <span style={{fontSize: '20px',fontWeight:'bold',marginLeft:'100px'}}>comments</span>
+                    <Droppable id="dr6" style={droppableStyle1}>
+                       {/* <NotDraggable id="item11" style={{margin:'8px'}}><Item>comments</Item></NotDraggable>*/}
+                        {/*<Draggable id="item12" style={{margin:'8px'}}><Item>Some Other Text5</Item></Draggable>*/}
                     </Droppable>
                 </div>
             </Wrapper>

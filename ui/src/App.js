@@ -6,20 +6,21 @@ import Chart from './components/Chart/Chart';
 import DataTable1 from './components/DataTable/DataTable';
 import {RangeDatePicker} from '@y0c/react-datepicker';
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/slide.css';
-var Loader = require('react-loader');
+
 class App extends Component {
+  constructor(props){
+    super(props);
+}
 toggleMenu() {
+  debugger;
   var css = (this.state.menuCollapsed) ? "toggled" : "";
   // !this.state.menuCollapsed;
   this.setState({"menuCollapsed": css});
 }
-state = {
-  menuCollapsed: true
-};
   render() {
-    
+    this.state = {
+      menuCollapsed: true
+    };
     
     const arr = [classes.Panel, classes.PanelPrimary];
     const arr1 = arr.join(' ');
@@ -33,9 +34,7 @@ state = {
         {/* Page Wrapper */}
         <div>
           {/* Sidebar */}
-          <Loader loaded={this.state.loaded}>
-            <h1>thiravi</h1>
-          </Loader>
+         
           {/* End of Sidebar */}
           {/* Content Wrapper */}
           <div id="content-wrapper" className="d-flex flex-column">
@@ -62,7 +61,7 @@ state = {
                 <ul className="navbar-nav ml-auto">
                   {/* Nav Item - Search Dropdown (Visible Only XS) */}
                   <li className="nav-item dropdown no-arrow d-sm-none">
-                    <a href="index.html" className="nav-link dropdown-toggle" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i className="fas fa-search fa-fw" />
                     </a>
                     {/* Dropdown - Messages */}
@@ -82,9 +81,9 @@ state = {
                   <div className="topbar-divider d-none d-sm-block" />
                   {/* Nav Item - User Information */}
                   <li className="nav-item dropdown no-arrow">
-                    <a href="index.html" className="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span className="mr-2 d-none d-lg-inline text-gray-600 small">Thiraviaraj B</span>
-                      <img alt="circle" className="img-profile rounded-circle" src="https://source.unsplash.com/ZHvM3XIOHoE/60x60" />
+                      <img className="img-profile rounded-circle" src="https://source.unsplash.com/ZHvM3XIOHoE/60x60" />
                     </a>
                   </li>
                 </ul>
@@ -96,7 +95,7 @@ state = {
                 <div className="d-sm-flex align-items-center justify-content-between mb-4">
                   <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
                   <RangeDatePicker startPlaceholder="Start Date" endPlaceholder="End Date" onChange={onChange("Range DatePicker")} />
-                  <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
+                  <a href="#" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
                 </div>
                 {/* Content Row */}
                 <div className="row">
@@ -205,7 +204,6 @@ state = {
                     </div>
                   </div>
                 </div>
-              
               </div>
               {/* /.container-fluid */}
             </div>
@@ -250,7 +248,6 @@ state = {
         {/* Custom scripts for all pages*/}
         {/* Page level plugins */}
         {/* Page level custom scripts */}
-        
       </div>
       
     );

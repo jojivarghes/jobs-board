@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 
 export class StepOne extends Component {
   constructor (props) {
@@ -10,10 +9,10 @@ export class StepOne extends Component {
   render () {
     const sourceOptions = this.props.myData.options.map((option) => <option key={option.port} value={option.name}>{option.name}</option>)
     return (
-      <div className='center'>
+      <div style={{minHeight: "400px"}} className='center'>
         <div className='row' style={{margin: '10px 0 0 0'}}>
           <div className="six columns">
-            <label for="source">Select Source</label>
+            <label htmlFor="source">Select Source</label>
             <select className="u-full-width" id="source" value={this.props.myData.selectedOption} onChange={this.props.handleChange} autoFocus>
               <option value="">Select Source</option>
               {sourceOptions}
@@ -78,12 +77,12 @@ export class StepOne extends Component {
               className='u-full-width'
               placeholder='Port'
               type='text'
+              disabled
               onChange={this.props.handlePortChanged}
               value={this.props.myData.port}
             />
           </div>
         </div>
-        <button type="button" style={{float: 'left'}}>Submit</button>
         </section> : null}
       </div>
     )

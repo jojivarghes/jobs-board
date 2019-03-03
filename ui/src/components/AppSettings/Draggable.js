@@ -15,7 +15,8 @@ export default class Draggable extends React.Component{
                 draggable="true"
                 onDragStart={this.drag}
                 onDragOver={this.noAllowDrop}
-                style={this.props.style}>
+                style={this.props.style}
+                currentitem={this.props.currentitem}>
                 {this.props.children}
             </div>
         );

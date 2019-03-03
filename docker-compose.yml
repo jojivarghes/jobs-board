@@ -21,3 +21,14 @@ services:
       - "8000:8000"
     depends_on:
       - target-mysql
+  # ui:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - './ui:/jobDashboard'
+  #     - '/jobDashboard/node_modules'
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - NODE_ENV=development

@@ -42,3 +42,21 @@ RUN apt-get install -y locales \
 #RUN apt-get install -y unixodbc-dev
 RUN pip install -r requirements.txt
 COPY . /jobDashboard/
+
+# base image
+FROM node:9.6.1
+
+# # set working directory
+# # RUN mkdir /usr/src/app
+# WORKDIR /jobDashboard
+
+# # add `/usr/src/app/node_modules/.bin` to $PATH
+# ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+# # install and cache app dependencies
+# COPY /ui/package.json /jobDashboard/package.json
+# RUN npm install --silent
+# RUN npm install react-scripts@1.1.1 -g --silent
+
+# # start app
+# CMD ["npm", "start"]

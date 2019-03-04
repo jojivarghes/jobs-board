@@ -3,9 +3,10 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-import json
-import random
 from jb_settings.utils import save_source, get_source_by_id
+import json
+# from jb_settings.datasources.MySQL import test2, test, test3
+# import random
 
 # URL : /api/sources
 @method_decorator(csrf_exempt, name='dispatch')
@@ -59,23 +60,58 @@ class SourcesView(View):
 
 def list_of_tables(request, id):
     if request.method == "GET":
-        list_of_tables = ['jobs', 'jobs_history']
-        res = {
-            "id": id,
-            "tables": list_of_tables
-        }
+        list_of_tables_1 = ['table_1', 'table_2']
+        list_of_tables_2 = ['table_3']
+
+        if str(id) == '1':
+            res = {
+                "source_id": id,
+                "tables": list_of_tables_1
+            }
+        elif str(id) == '2':
+            res = {
+                "source_id": id,
+                "tables": list_of_tables_2
+            }
+        else:
+            res = {}
+
         return HttpResponse(json.dumps(res))
     else:
         return HttpResponse("Only GET allowed")
 
 def columns_for_table(request, id, tableName):
     if request.method == "GET":
-        list_of_columns = ['jobs_id', 'job_name', 'start_time', 'end_time']
-        res = {
-            "id": id,
-            "tableName": tableName,
-            "columns": list_of_columns
-        }
+        table1_columns = ['session_id', 'start_time', 'status', 'end_time', 'user_id']
+        table2_columns = ['session_id', 'comments']
+        table3_columns = ['job_id', 'start_time', 'end_time', 'status', 'comments']
+
+        if (str(id) == '1' and tableName == 'table_1'):
+            res = {
+                "source_id": id,
+                "table_name": tableName,
+                "columns": table1_columns
+            }
+        elif (str(id) == '1' and tableName == 'table_2'):
+            res = {
+                "source_id": id,
+                "table_name": tableName,
+                "columns": table2_columns
+            }
+        elif (str(id) == '2' and tableName == 'table_3'):
+            res = {
+                "source_id": id,
+                "table_name": tableName,
+                "columns": table3_columns
+            }
+        else:
+            res = {
+                "source_id": id,
+                "table_name":tableName,
+                "error": "ID and table_name does not match"
+
+            }
+
         return HttpResponse(json.dumps(res))
     else:
         return HttpResponse("Only GET allowed")

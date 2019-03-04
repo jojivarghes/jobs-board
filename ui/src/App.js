@@ -27,7 +27,22 @@ state = {
     const arrGreen1 = arrGreen.join(' ');
     const arrRed = [classes.Panel, classes.PanelRed];
     const arrRed1 = arrRed.join(' ');
-    const onChange = title => (...args) => console.log(title, args);
+    const onChangeHandler = (start, end) => {
+      if(start){
+        let date = new Date(start);
+        let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+        let startDate = [day, mnth,date.getFullYear()].join("/");
+        console.log(startDate);
+      }
+      if(end){
+        let date = new Date(end);
+        let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+        let endDate = [day, mnth,date.getFullYear()].join("/");
+        console.log(endDate);
+      }
+    }
     return (
 <div className={classes.App}>
         {/* Page Wrapper */}
@@ -95,7 +110,7 @@ state = {
                 {/* Page Heading */}
                 <div className="d-sm-flex align-items-center justify-content-between mb-4">
                   <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
-                  <RangeDatePicker startPlaceholder="Start Date" endPlaceholder="End Date" onChange={onChange("Range DatePicker")} />
+                  <RangeDatePicker startPlaceholder="Start Date" endPlaceholder="End Date" dateFormat="DD/MM/YYYY" onChange={(start, end) => onChangeHandler(start,end)} />
                   <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
                 </div>
                 {/* Content Row */}

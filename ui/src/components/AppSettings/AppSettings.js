@@ -4,7 +4,8 @@ import { StepTwo } from './StepTwo';
 import { StepThree } from './StepThree';
 import { StepFour } from './StepFour';
 import Multistep from './MultiStep';
-import axios from 'axios';
+import axios from '../../axios-jobs';
+
 
 class AppSettings extends React.Component {
         state = { 
@@ -20,7 +21,7 @@ class AppSettings extends React.Component {
         };
 
     componentDidMount(){
-        axios.get('https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources')
+        axios.get('/api/sources')
         .then((response) => {
           this.setState({options:response.data.sources});
         })

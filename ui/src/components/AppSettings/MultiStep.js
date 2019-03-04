@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import axios from 'axios';
+import axios from '../../axios-jobs';
 // import Alert from 'react-s-alert';
 const getNavStyles = (indx, length) => {
   let styles = []
@@ -43,9 +43,9 @@ export default function MultiStep(props) {
   function setStepState(indx) {
     if(indx === 1) {
       console.log(props.myData)
-      axios.post('https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources', props.myData)
+      axios.post('/api/sources', props.myData)
       .then((response) => {
-        axios.get('https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources/1/tables')
+        axios.get('/api/sources/1/tables')
         .then((response) => {
           console.log(response.data)
           // this.setState({tables:response.data});

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Draggable from './Draggable';
 import Droppable from './Droppable';
-import axios from 'axios';
+import axios from '../../axios-jobs';
 import Alert from 'react-s-alert';
 
 const Wrapper = styled.div`
@@ -75,7 +75,7 @@ export default class DragNDrop extends React.Component{
     }
 
     button1Handler (tableName) {
-        axios.get("https://44e93c36-0921-47b0-8e07-20e0350ce62d.mock.pstmn.io/api/sources/{id}/tables/" +tableName+"/columns")
+        axios.get("/api/sources/{id}/tables/" +tableName+"/columns")
         .then((response) => {
           let colObj = {tableName: tableName, columns: response.data};
           this.setState({columns:colObj});

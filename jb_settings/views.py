@@ -4,9 +4,9 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from jb_settings.utils import save_source, get_source_by_id
+from jb_settings.datasources.MySQL import MySQL
+
 import json
-# from jb_settings.datasources.MySQL import test2, test, test3
-# import random
 
 # URL : /api/sources
 @method_decorator(csrf_exempt, name='dispatch')
@@ -57,6 +57,17 @@ class SourcesView(View):
 #         req_data = req_body.get('data', 'oops')
 #         source_id = save_source(req_data)
 #         return HttpResponse(json.dumps({"source_id": source_id}))
+
+def mysql_testing(request):
+    mysql_obj = MySQL(server_name='172.16.18.242',
+                      port=3306,
+                      user_name='root',
+                      password='root',
+                      db_name='TestDB')
+    query = 'SELECT * from person'
+    results = mysql_obj.execQuery(query)
+    return HttpResponse(json.dumps(results))
+
 
 def list_of_tables(request, id):
     if request.method == "GET":
@@ -123,6 +134,7 @@ def source_target_mapping(request, id):
         pass
     else:
         return HttpResponse("Only GET and POST allowed")
+
 
 '''
 

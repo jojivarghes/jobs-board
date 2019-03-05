@@ -7,7 +7,9 @@ services:
       MYSQL_DATABASE: jobs_board
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    networks:
+    - jobs_board_network
 
   web:
     build: .
@@ -21,3 +23,8 @@ services:
       - "8000:8000"
     depends_on:
       - target-mysql
+    networks:
+      - jobs_board_network
+
+networks:
+  jobs_board_network:

@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+import json
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,6 +33,7 @@ class BaseApiView(APIView):
 
     def post(self, request):
         data = request.body
+        data = json.loads(data)
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()

@@ -133,10 +133,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static_0/'
 
 STATICFILES_DIRS = [
-    os.path.join(UI_BUILD_DIR, 'static'),
+    os.path.join(UI_BUILD_DIR),
 ]
 
 CONF_DIR = os.path.expanduser('~/config')

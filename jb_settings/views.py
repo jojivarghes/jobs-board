@@ -33,7 +33,10 @@ class IndexView(View):
 
     def post(self, request):
         req_body = json.loads(request.body)
-        req_data = req_body.get('data','oops')
+        try:
+            req_data = req_body.get('data')
+        except Exception:
+            return HttpResponse("Error. The KEY data' not found in the payload for this request")
         source_id = save_source(req_data)
         return HttpResponse(json.dumps({"source_id":source_id}))
 
@@ -81,7 +84,10 @@ class Columns(View):
 class Configuration(View):
     def post(self, request, id):
         req_body = json.loads(request.body)
-        req_data = req_body.get('data', 'oops')
+        try:
+            req_data = req_body.get('data')
+        except Exception:
+            return HttpResponse("Error. The KEY data' not found in the payload for this request")
         res = save_configuration(id, req_data)
         return HttpResponse(res)
 

@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from jb_settings.datasources.MySQL import MySQL
 from jb_settings.datasources.mssql import MSSQL
 from jb_dashboard.models import JobHistoryModel
@@ -66,8 +68,10 @@ def get_query_from_conf():
 
     with open(source_path) as f:
         data = json.load(f)
-
-    query = data['sql ']
+    try:
+        query = data['sql ']
+    except Exception:
+        query = data['sql']
     return (source_id, query)
 
 
@@ -86,7 +90,21 @@ def execute_mapping_query():
     db_passwd = db['password']
 
     if db_type.lower() == "ms_sqlserver":
-        return []
+        mssql_obj = MSSQL(server_name=str(db_host) + ',' + str(db_port),
+                          user_name=db_user,
+                          password=db_passwd,
+                          db_name=db_name)
+        for row in mssql_obj.exec_mapping_query(query_params[1]):
+            job = JobHistoryModel()
+            job.job_id = row['job_id']
+            job.status = row['status']
+            job.start_time = row['start_time']
+            job.end_time = row['end_time']
+            job.comments = row['comments']
+            job.created_date = timezone.now()
+            job.updated_date = timezone.now()
+            job.save()
+        return ["Success"]
     elif db_type.lower() == "mysql":
         mysql_obj = MySQL(server_name=db_host,
                           port=int(db_port),

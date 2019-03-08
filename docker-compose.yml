@@ -10,10 +10,11 @@ services:
       - "3307:3306"
 
   web:
+    restart: always
     build: .
     command: >
-      bash -c " python3.6 manage.py makemigrations jb_dashboard
-      && python3.6 manage.py migrate --fake jb_dashboard
+      bash -c " python3.6 manage.py makemigrations
+      && python3.6 manage.py migrate
       && python3.6 manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code

@@ -97,6 +97,7 @@ class JobDateRangeView(BaseApiView):
         self.model_class = JobHistoryModel
         self.serializer_class = JobHistorySerializer
 
+
     def get(self, request):
         return_obj_first = JobHistoryModel.objects.all().order_by('start_time')[0]
         return_obj_last = JobHistoryModel.objects.all().order_by('start_time')[::-1][0]
@@ -165,7 +166,6 @@ class JobChartView(BaseApiView):
             return_obj = self.model_class.objects.filter(start_time__lte=this_week,
                                                          start_time__gte=last_week)
             return_dict = dict()
-            print(return_dict, "BBB", last_week, this_week)
             for obj in return_obj:
                 key = str(obj.start_time.date())
                 if key in return_dict:

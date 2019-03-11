@@ -95,6 +95,8 @@ class JobDateRangeView(BaseApiView):
     def __init__(self):
         super(JobDateRangeView, self).__init__()
         self.model_class = JobHistoryModel
+        self.serializer_class = JobHistorySerializer
+
 
     def get(self, request):
         return_obj_first = JobHistoryModel.objects.all().order_by('start_time')[0]
@@ -107,6 +109,7 @@ class JobScoresView(BaseApiView):
     def __init__(self):
         super(JobScoresView, self).__init__()
         self.model_class = JobHistoryModel
+        self.serializer_class = JobHistorySerializer
 
     def get(self, request):
         self.create_filter(request.GET)
@@ -124,11 +127,40 @@ class JobChartView(BaseApiView):
     def __init__(self):
         super(JobChartView, self).__init__()
         self.model_class = JobHistoryModel
+        self.serializer_class = JobHistorySerializer
         self.filter_list = ['start', 'end', 'frequency']
+
+    def set_frequency_filter(self, data):
+        start_obj = get_date_obj(data.getlist('start')[0])
+        end_obj = get_date_obj(data.getlist('end')[0])
+        if start_obj.month == end_obj.month and start_obj.year == end_obj.year:
+            self.filter['frequency'] = 'day'
+        elif start_obj.year == end_obj.year:
+            self.filter['frequency'] = 'week'
+        elif end_obj.year-start_obj.year <= 10:
+            self.filter['frequency'] = 'month'
+        else:
+            self.filter['frequency'] = 'year'
 
     def get(self, request):
         self.create_filter(request.GET)
-        if self.filter['frequency'] == 'week':
+        self.set_frequency_filter(request.GET)
+        print(self.filter, "AAAAA")
+        if self.filter['frequency'] == 'day':
+            return_obj = self.model_class.objects.filter(start_time__gte=self.filter['start_time__gte'],
+                                                         start_time__lte=self.filter['end_time__lte'])
+            print(return_obj, "CCC")
+            return_dict = dict()
+            for obj in return_obj:
+                print(obj, "CCC")
+                if obj.start_time.date in return_dict:
+                    if obj.status in return_dict[obj.start_time.day]:
+                        return_dict[obj.start_time.date][obj.status] += 1
+                    else:
+                        return_dict[obj.start_time.date][obj.status] = 1
+                else:
+                    return_dict[obj.start_time.date] = {obj.status: 1}
+        elif self.filter['frequency'] == 'week':
             last_week = self.filter['start_time__gte'] - timedelta(days=7)
             this_week = last_week + timedelta(days=7)
             return_obj = self.model_class.objects.filter(start_time__lte=this_week,

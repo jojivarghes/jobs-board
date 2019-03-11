@@ -104,4 +104,4 @@ ENV/
 .DS_Store
 .idea/
 .vscode
-static/node_modules/*
+ui/node_modules/*

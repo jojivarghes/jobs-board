@@ -135,7 +135,7 @@ class JobChartView(BaseApiView):
         end_obj = get_date_obj(data.getlist('end')[0])
         if start_obj.month == end_obj.month and start_obj.year == end_obj.year:
             self.filter['frequency'] = 'day'
-        elif start_obj.year == end_obj.year:
+        elif start_obj.year == end_obj.year and start_obj.month != end_obj.month:
             self.filter['frequency'] = 'week'
         elif end_obj.year-start_obj.year <= 10:
             self.filter['frequency'] = 'month'
@@ -145,64 +145,101 @@ class JobChartView(BaseApiView):
     def get(self, request):
         self.create_filter(request.GET)
         self.set_frequency_filter(request.GET)
-        print(self.filter, "AAAAA")
         if self.filter['frequency'] == 'day':
             return_obj = self.model_class.objects.filter(start_time__gte=self.filter['start_time__gte'],
                                                          start_time__lte=self.filter['end_time__lte'])
-            print(return_obj, "CCC")
+            date_obj = self.filter['start_time' + '__gte']
             return_dict = dict()
+            while date_obj <= self.filter['end_time'+'__lte']:
+                return_dict[str(date_obj.date())] = {}
+                date_obj = date_obj+timedelta(days=1)
+
             for obj in return_obj:
-                print(obj, "CCC")
-                if obj.start_time.date in return_dict:
-                    if obj.status in return_dict[obj.start_time.day]:
-                        return_dict[obj.start_time.date][obj.status] += 1
+                marked_date = str(obj.start_time.date())
+                if marked_date in return_dict:
+                    if obj.status in return_dict[marked_date]:
+                        return_dict[marked_date][obj.status] += 1
                     else:
-                        return_dict[obj.start_time.date][obj.status] = 1
+                        return_dict[marked_date][obj.status] = 1
                 else:
-                    return_dict[obj.start_time.date] = {obj.status: 1}
+                    return_dict[marked_date] = {obj.status: 1}
         elif self.filter['frequency'] == 'week':
-            last_week = self.filter['start_time__gte'] - timedelta(days=7)
-            this_week = last_week + timedelta(days=7)
-            return_obj = self.model_class.objects.filter(start_time__lte=this_week,
-                                                         start_time__gte=last_week)
+            this_week = self.filter['start_time__gte']
+            next_week = this_week + timedelta(days=7)
             return_dict = dict()
-            for obj in return_obj:
-                key = str(obj.start_time.date())
-                if key in return_dict:
-                    if obj.status in return_dict[key]:
-                        return_dict[key][obj.status] += 1
+            while next_week <= self.filter['end_time__lte']:
+
+                return_obj = self.model_class.objects.filter(start_time__lt=next_week,
+                                                             start_time__gte=this_week)
+                marked_date = str(this_week.date())
+                return_dict[marked_date] = {}
+                for obj in return_obj:
+                    if marked_date in return_dict:
+                        if obj.status in return_dict[marked_date]:
+                            return_dict[marked_date][obj.status] += 1
+                        else:
+                            return_dict[marked_date][obj.status] = 1
                     else:
-                        return_dict[key][obj.status] = 1
-                else:
-                    return_dict[key] = {obj.status: 1}
+                        return_dict[marked_date] = {obj.status: 1}
+                this_week = next_week
+                next_week = this_week + timedelta(days=7)
+
         elif self.filter['frequency'] == 'month':
             return_obj = self.model_class.objects.filter(start_time__gte=self.filter['start_time__gte'],
                                                          start_time__lte=self.filter['end_time__lte'])
             return_dict = dict()
+            month, year = self.filter['start_time' + '__gte'].month, self.filter['start_time' + '__gte'].year
+            while True:
+                if month > 12:
+                    month = 1
+                    year = year+1
+                if datetime(year, month, 1) > self.filter['end_time'+'__lte']:
+                    break
+                return_dict['01-'+str(month)+'-'+str(year)] = {}
+                month += 1
             for obj in return_obj:
-                if obj.start_time.month in return_dict:
-                    if obj.status in return_dict[obj.start_time.month]:
-                        return_dict[obj.start_time.month][obj.status] += 1
-                    else:
-                        return_dict[obj.start_time.month][obj.status] = 1
+                if obj.start_time.date() == self.filter['end_time'+'__lte'].date():
+                    marked_date = str(obj.start_time.date())
                 else:
-                    return_dict[obj.start_time.month] = {obj.status: 1}
+                    marked_date = '01-' + str(obj.start_time.month) + '-' + str(obj.start_time.year)
+                if marked_date in return_dict:
+                    if obj.status in return_dict[marked_date]:
+                        return_dict[marked_date][obj.status] += 1
+                    else:
+                        return_dict[marked_date][obj.status] = 1
+                else:
+                    return_dict[marked_date] = {obj.status: 1}
         elif self.filter['frequency'] == 'year':
             return_obj = self.model_class.objects.filter(start_time__gte=self.filter['start_time__gte'],
                                                          start_time__lte=self.filter['end_time__lte'])
             return_dict = dict()
+            year = self.filter['start_time' + '__gte'].year
+            while year <= self.filter['end_time'+'__lte'].year:
+                return_dict['01-01-'+str(year)] = {}
+                year += 1
             for obj in return_obj:
-                if obj.start_time.year not in return_dict:
-                    return_dict[obj.start_time.year] = {obj.status: 1}
+                if obj.start_time.year == self.filter['end_time' + '__lte'].year:
+                    marked_date = str(obj.start_time.date())
                 else:
-                    if obj.status in return_dict[obj.start_time.year]:
-                        return_dict[obj.start_time.year][obj.status] += 1
+                    marked_date = '01-01-' + str(obj.start_time.year)
+                if marked_date not in return_dict:
+                    return_dict[marked_date] = {obj.status: 1}
+                else:
+                    if obj.status in return_dict[marked_date]:
+                        return_dict[marked_date][obj.status] += 1
                     else:
-                        return_dict[obj.start_time.year][obj.status] = 1
+                        return_dict[marked_date][obj.status] = 1
 
         else:
             return Response("Invalid frequency filter input!!!")
-        return Response(return_dict)
+        return_rest_list = []
+        for key, value in return_dict.items():
+            tmp_dict = dict()
+            tmp_dict['date'] = key
+            for k, v in value.items():
+                tmp_dict[k] = v
+            return_rest_list.append(tmp_dict)
+        return Response(return_rest_list)
 
 
 def get_date_obj(data):

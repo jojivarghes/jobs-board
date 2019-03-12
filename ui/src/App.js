@@ -18,7 +18,8 @@ constructor () {
     startDate: '',
     endDate: '',
     jobStatusObj: {},
-    jobsTable: []
+    jobsTable: [],
+    jobsChart: []
   };
   
 }
@@ -35,7 +36,7 @@ componentDidMount(){
         let date = new Date(response.data.first);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        let startDate = [day, mnth,date.getFullYear()].join("/");
+        let startDate = [date.getFullYear(), mnth, day].join("-");
         console.log(startDate);
         this.setState({"startDate": startDate});
         console.log(this.state.startDate);
@@ -44,7 +45,7 @@ componentDidMount(){
         let date = new Date(response.data.last);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        let endDate = [day, mnth,date.getFullYear()].join("/");
+        let endDate = [date.getFullYear(), mnth, day].join("-");
         console.log(endDate);
         this.setState({"endDate": endDate});
         console.log(this.state.endDate);
@@ -73,6 +74,16 @@ componentDidMount(){
     .catch((error) => {
       console.log(error);
     });
+
+    axios.get('/api/dashboard/job_chart?start=2017-01-01&end=2019-03-10')
+    .then((response) => {
+      if(response.data){
+        this.setState({jobsChart: response.data})
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
   render() {
     const arr = [classes.Panel, classes.PanelPrimary];
@@ -86,7 +97,7 @@ componentDidMount(){
         let date = new Date(start);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        var startDate = [day, mnth,date.getFullYear()].join("/");
+        var startDate = [date.getFullYear(), mnth, day].join("-");
         console.log(startDate);
         //console.log(this.state.startDate);
       }
@@ -94,7 +105,7 @@ componentDidMount(){
         let date = new Date(end);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        var endDate = [day, mnth,date.getFullYear()].join("/");
+        var endDate = [date.getFullYear(), mnth, day].join("-");
         console.log(endDate);
         //console.log("111111",this.state.endDate);
       }
@@ -121,7 +132,17 @@ componentDidMount(){
         })
         .catch((error) => {
           console.log(error);
-        }); 
+        });
+        
+        axios.get('/api/dashboard/job_chart?start='+startDate+'&end='+endDate)
+        .then((response) => {
+          if(response.data){
+            this.setState({jobsChart: response.data})
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       }
     }
     
@@ -154,9 +175,9 @@ componentDidMount(){
                     endDay={this.state.endDate} 
                     startPlaceholder="Start Date" 
                     endPlaceholder="End Date" 
-                    dateFormat="DD/MM/YYYY" 
+                    dateFormat="YYYY-MM-DD" 
                     onChange={(start, end) => onChangeHandler(start,end)} />
-                  <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
+                  <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Sync</a>
                 </div>
                 {/* Content Row */}
                 <div className="row">
@@ -169,81 +190,6 @@ componentDidMount(){
                   <JobStatus totalJobs="9" jobStatus="Succeeded" myClass={arrGreen1} myChildClass={classes.PanelHeading} />
             */} </div>
                 <div className="row">
-                  {/* Earnings (Monthly) Card Example */}
-                  <div className="col-xl-3 col-md-6 mb-4">
-                    <div className="card border-left-primary shadow h-100 py-2">
-                      <div className="card-body">
-                        <div className="row no-gutters align-items-center">
-                          <div className="col mr-2">
-                            <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Jobs</div>
-                            <div className="h5 mb-0 font-weight-bold text-gray-800">5455</div>
-                          </div>
-                          <div className="col-auto">
-                            <i className="fas fa-calendar fa-2x text-gray-300" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Earnings (Monthly) Card Example */}
-                  <div className="col-xl-3 col-md-6 mb-4">
-                    <div className="card border-left-success shadow h-100 py-2">
-                      <div className="card-body">
-                        <div className="row no-gutters align-items-center">
-                          <div className="col mr-2">
-                            <div className="text-xs font-weight-bold text-success text-uppercase mb-1">Overall Avg passes</div>
-                            <div className="h5 mb-0 font-weight-bold text-gray-800">25%</div>
-                          </div>
-                          <div className="col-auto">
-                            <i className="fas fa-dollar-sign fa-2x text-gray-300" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Earnings (Monthly) Card Example */}
-                  <div className="col-xl-3 col-md-6 mb-4">
-                    <div className="card border-left-info shadow h-100 py-2">
-                      <div className="card-body">
-                        <div className="row no-gutters align-items-center">
-                          <div className="col mr-2">
-                            <div className="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                            <div className="row no-gutters align-items-center">
-                              <div className="col-auto">
-                                <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                              </div>
-                              <div className="col">
-                                <div className="progress progress-sm mr-2">
-                                  <div className="progress-bar bg-info" role="progressbar" style={{width: '50%'}} aria-valuenow={50} aria-valuemin={0} aria-valuemax={100} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-auto">
-                            <i className="fas fa-clipboard-list fa-2x text-gray-300" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Pending Requests Card Example */}
-                  <div className="col-xl-3 col-md-6 mb-4">
-                    <div className="card border-left-warning shadow h-100 py-2">
-                      <div className="card-body">
-                        <div className="row no-gutters align-items-center">
-                          <div className="col mr-2">
-                            <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                            <div className="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                          </div>
-                          <div className="col-auto">
-                            <i className="fas fa-comments fa-2x text-gray-300" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
                   {/* Content Column */}
                   <div className="col-lg-12 mb-4">
                     {/* Graphical Representation */}
@@ -252,7 +198,7 @@ componentDidMount(){
                         <h6 className="m-0 font-weight-bold text-primary">Analytics</h6>
                       </div>
                       <div className="card-body">
-                        <Chart />
+                        <Chart jobsChartData={this.state.jobsChart} />
                       </div>
                     </div>
                     <div className="card shadow mb-4">

@@ -1,8 +1,8 @@
 import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 
-const chart = (prop) => {
-    const data = [
+const chart = (props) => {
+    /*const data = [
         {
           name: 'Feb 2019', uv: 4000, pv: 2400, amt: 2400,
         },
@@ -21,14 +21,15 @@ const chart = (prop) => {
         {
           name: 'Sep 2018', uv: 2390, pv: 3800, amt: 2500,
         }
-      ];
+      ];*/
+    const data = props.jobsChartData;
     return (
         <LineChart width={1000} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+            <Line type="monotone" dataKey="success" stroke="#8884d8" />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Line type="monotone" dataKey="pv" stroke="red" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="name" />
+            {/*<Line type="monotone" dataKey="pv" stroke="red" />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />*/}
+            <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
         </LineChart>

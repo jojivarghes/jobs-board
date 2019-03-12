@@ -36,10 +36,6 @@ const routing = (
             <li className="nav-item">
               <Link to="/appsetts" className="nav-link"><FaCog></FaCog>Application Settings</Link>
             </li>
-            {/* Nav Item - Utilities Collapse Menu */}
-            <li className="nav-item">
-              <Link to="/websetts" className="nav-link"><FaWrench></FaWrench>Website Settings</Link>
-            </li>
             {/* Divider */}
             <hr className="sidebar-divider" />
             {/* Heading */}

@@ -11,8 +11,6 @@ from jb_dashboard.models import JobHistoryModel
 
 import json
 
-
-# @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(View):
 
     def get(self, request):
@@ -37,6 +35,7 @@ class IndexView(View):
             req_data = req_body.get('data')
         except Exception:
             return HttpResponse("Error. The KEY data' not found in the payload for this request")
+
         source_id = save_source(req_data)
         return HttpResponse(json.dumps({"source_id":source_id}))
 
@@ -80,7 +79,6 @@ class Columns(View):
         }
         return HttpResponse(json.dumps(res))
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class Configuration(View):
     def post(self, request, id):
         req_body = json.loads(request.body)
@@ -94,6 +92,12 @@ class Configuration(View):
 class Sync(View):
 
     def get(self, request):
+        # First delete the existing data
+        # This is done because currently UI cannot show all the experimental data
+        # Once all the exp are done, new data can be appended instead of purge
+        JobHistoryModel.objects.all().delete()
+
+        # Now, insert the new data
         res = execute_mapping_query()
 
         return HttpResponse(json.dumps(res, default=str))

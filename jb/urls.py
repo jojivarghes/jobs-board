@@ -19,11 +19,22 @@ from django.conf.urls import include
 from jb_dashboard.views import index
 from django.contrib.staticfiles import views
 from django.urls import re_path
+from django.conf import settings
+import os
+
+
+def serve_static_content(request, static_path):
+    static_content_path = os.path.join(settings.UI_BUILD_DIR, static_path)
+    if os.path.exists(static_content_path):
+        return views.serve(request, static_path)
+    else:
+        return index(request)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('api/dashboard/', include('jb_dashboard.urls')),
     path('api/sources/', include('jb_settings.urls')),
-    re_path(r'(?P<path>.*)$', views.serve),
+    re_path(r'(?P<static_path>.*)$', serve_static_content),
 ]

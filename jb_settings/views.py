@@ -12,7 +12,7 @@ from jb_dashboard.models import JobHistoryModel
 import json
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(View):
 
     def get(self, request):
@@ -80,7 +80,7 @@ class Columns(View):
         }
         return HttpResponse(json.dumps(res))
 
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class Configuration(View):
     def post(self, request, id):
         req_body = json.loads(request.body)

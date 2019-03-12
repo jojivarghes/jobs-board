@@ -4,25 +4,31 @@ import { FaBolt, FaArrowCircleRight, FaEject, FaPaperPlane, FaBomb, FaStop, FaTh
 
 const jobStatus = (props) => {
     let faIcon = null;
-    if(props.jobStatus === "Executed") {
+    if(props.jobStatus === "done") {
         faIcon = <FaBolt className={classes.Fa5x} />;
     }
-    else if(props.jobStatus === "Running") {
+    else if(props.jobStatus === "complete") {
         faIcon = <FaEject className={classes.Fa5x} />;
     }
-    else if(props.jobStatus === "Cancelled") {
+    else if(props.jobStatus === "completed") {
+        faIcon = <FaEject className={classes.Fa5x} />;
+    }
+    else if(props.jobStatus === "error") {
         faIcon = <FaPaperPlane className={classes.Fa5x} />;
     }
-    else if(props.jobStatus === "Failed") {
+    else if(props.jobStatus === "failed") {
         faIcon = <FaBomb className={classes.Fa5x} />;
     }
-    else if(props.jobStatus === "Halted") {
+    else if(props.jobStatus === "failure") {
         faIcon = <FaStop className={classes.Fa5x} />;
     }
-    else if(props.jobStatus === "Succeeded") {
+    else if(props.jobStatus === "sucessful") {
         faIcon = <FaThumbsUp className={classes.Fa5x} />;
     }
     else if(props.jobStatus === "success") {
+        faIcon = <FaThumbsUp className={classes.Fa5x} />;
+    }
+    else {
         faIcon = <FaThumbsUp className={classes.Fa5x} />;
     }
     return (

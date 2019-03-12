@@ -95,6 +95,16 @@ componentDidMount(){
     const arrGreen1 = arrGreen.join(' ');
     const arrRed = [classes.Panel, classes.PanelRed];
     const arrRed1 = arrRed.join(' ');
+    const syncHandler = () => {
+      axios.get('/api/sources/sync')
+        .then((response) => {
+          if(response.data){
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     const onChangeHandler = (start, end) => {
       if(start){
         let date = new Date(start);
@@ -151,7 +161,7 @@ componentDidMount(){
     
     if(this.state.jobStatusObj !== null){
       var jobStatusObj1 = Object.keys(this.state.jobStatusObj).map((key, index) => {
-        return <JobStatus key={key} totalJobs={ this.state.jobStatusObj[key]} jobStatus={key} myClass={arr1} myChildClass={classes.PanelHeading} />;
+        return <JobStatus key={key} totalJobs={ this.state.jobStatusObj[key]} jobStatus={key} myClass={(key ==='success' || key === 'sucessful' || key === 'complete' || key === 'done' || key === 'completed') ? arrGreen1 : (key === 'error' || key === 'failed' || key === 'failure') ? arrRed1 : arr1} myChildClass={classes.PanelHeading} />;
       });
     }
     
@@ -180,7 +190,7 @@ componentDidMount(){
                     endPlaceholder="End Date" 
                     dateFormat="YYYY-MM-DD" 
                     onChange={(start, end) => onChangeHandler(start,end)} />
-                  <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Sync</a>
+                  <button onClick={syncHandler} style={{color: 'white'}} className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Sync</button>
                 </div>
                 {/* Content Row */}
                 <div className="row">

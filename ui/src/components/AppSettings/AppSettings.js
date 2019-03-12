@@ -9,12 +9,12 @@ import axios from '../../axios-jobs';
 
 class AppSettings extends React.Component {
         state = { 
-            userName: '', 
+            username: '', 
             password: '',
             host: '',
             port: '',
             options: [],
-            selectedOption: '',
+            type: '',
             db: '',
             table: [],
             pageTwo: []
@@ -36,11 +36,11 @@ class AppSettings extends React.Component {
       }
 
       handleUserNameChanged = (event) => {
-        this.setState({userName: event.target.value})
+        this.setState({username: event.target.value})
       }
     
       handleDbNameChanged = (event) => {
-        this.setState({dbName: event.target.value})
+        this.setState({dbname: event.target.value})
       }
     
       handlePasswordChanged = (event) => {
@@ -65,10 +65,10 @@ class AppSettings extends React.Component {
       }
     
       handleChange = (event) => {
-        this.setState({selectedOption: event.target.value});
+        this.setState({type: event.target.value});
         setTimeout(()=>{
           for(var i=0;i<this.state.options.length;i++){
-            if(this.state.selectedOption === this.state.options[i].name){
+            if(this.state.type === this.state.options[i].name){
               this.setState({port: this.state.options[i].port});
               break;
             }
@@ -98,13 +98,52 @@ class AppSettings extends React.Component {
         + this.state.pageTwo[0]['status'] + " as status, "
         + this.state.pageTwo[0]['comments'] + " as comments from "
         + tableName;
+        } else if(pgTwo && pgTwo['job_id'] && pgTwo['start_time'] && pgTwo['end_time'] && pgTwo['status']) {
+          var tableName = this.state.pageTwo[0]['job_id'].split(".")[0];
+        return "select " + this.state.pageTwo[0]['job_id'] + " as job_id, " 
+        + this.state.pageTwo[0]['start_time'] + " as start_time, "
+        + this.state.pageTwo[0]['end_time'] + " as end_time, "
+        + this.state.pageTwo[0]['status'] + " as status from "
+        + tableName;
         }
         return "";
         
       }
 
       formFinalQuery = () => {
-        return this.setSelectQuery() + " " + this.state.whereTxt + " " + this.state.joinTxt;
+        if(this.state.whereTxt && this.state.joinTxt) {
+          return this.setSelectQuery() + " " + this.state.whereTxt + " " + this.state.joinTxt;
+        } else if(!this.state.whereTxt && !this.state.joinTxt) {
+          return this.setSelectQuery();
+        } else if(this.state.whereTxt && !this.state.joinTxt) {
+          return this.setSelectQuery() + " " + this.state.whereTxt;
+        } else if(!this.state.whereTxt && this.state.joinTxt) {
+          return this.setSelectQuery() + " " + this.state.joinTxt;
+        }
+      }
+      createPostMap = () => {
+         return [   
+            [
+              "table_1.job_id",
+              this.state.pageTwo[0]['job_id']
+            ],
+            [
+              "table_1.start_time",
+              this.state.pageTwo[0]['start_time']
+            ],
+            [
+              "table_1.end_time",
+              this.state.pageTwo[0]['end_time']
+            ],
+            [
+              "table_1.status",
+              this.state.pageTwo[0]['status']
+            ],
+            [
+              "table_2.comments",
+              this.state.pageTwo[0]['comments'] ? this.state.pageTwo[0]['comments']: ""
+            ]
+          ]
       }
 
       render(){
@@ -123,7 +162,6 @@ class AppSettings extends React.Component {
         return (    
           <div id="content-wrapper" className="d-flex flex-column tenPadding"><div id="content">
               <div className="row">
-              {JSON.stringify(this.state.pageTwo)}
                   {/* Content Column */}
                   <div className="col-lg-12 mb-12">
                     {/* Graphical Representation */}
@@ -132,7 +170,7 @@ class AppSettings extends React.Component {
                         <h6 className="m-0 font-weight-bold text-primary">Job Configurations</h6>
                       </div>
                       <div className="card-body">
-                      <Multistep showNavigation={true} steps={steps} myData={this.state} setTable={this.handleTable} />
+                      <Multistep showNavigation={true} steps={steps} myData={this.state} setTable={this.handleTable} previewFinalQuery={this.formFinalQuery()} joinTxt={this.state.joinTxt} maps={this.createPostMap()} whereTxt={this.state.whereTxt} />
                       </div>
                     </div>
                   </div>

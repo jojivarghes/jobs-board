@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom';
-import {FaArrowAltCircleLeft,FaCog,FaTachometerAlt,FaWrench,FaUser} from 'react-icons/fa';
+import {FaArrowAltCircleLeft,FaCog,FaTachometerAlt,FaUser} from 'react-icons/fa';
 import AppSettings from './components/AppSettings/AppSettings';
 import Alert from 'react-s-alert';
 

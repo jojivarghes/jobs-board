@@ -8,19 +8,73 @@ import {RangeDatePicker} from '@y0c/react-datepicker';
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import axios from './axios-jobs';
 var Loader = require('react-loader');
 class App extends Component {
+constructor () {
+  super();
+  this.state = {
+    menuCollapsed: true,
+    startDate: '',
+    endDate: '',
+    jobStatusObj: {},
+    jobsTable: []
+  };
+  
+}
 toggleMenu() {
   var css = (this.state.menuCollapsed) ? "toggled" : "";
   // !this.state.menuCollapsed;
   this.setState({"menuCollapsed": css});
 }
-state = {
-  menuCollapsed: true
-};
+jobStatusObj1 = null;
+componentDidMount(){
+  axios.get('/api/dashboard/job_history/date_range')
+    .then((response) => {
+      if(response.data.first){
+        let date = new Date(response.data.first);
+        let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+        let startDate = [day, mnth,date.getFullYear()].join("/");
+        console.log(startDate);
+        this.setState({"startDate": startDate});
+        console.log(this.state.startDate);
+      }
+      if(response.data.last){
+        let date = new Date(response.data.last);
+        let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+        let day = ("0" + date.getDate()).slice(-2);
+        let endDate = [day, mnth,date.getFullYear()].join("/");
+        console.log(endDate);
+        this.setState({"endDate": endDate});
+        console.log(this.state.endDate);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    axios.get('/api/dashboard/job_scores?start=2017-01-01&end=2019-03-10')
+    .then((response) => {
+      if(response.data){
+        this.setState({jobStatusObj: response.data})
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    axios.get('/api/dashboard/job_history/?start=2017-01-01&end=2019-03-10')
+    .then((response) => {
+      if(response.data){
+        this.setState({jobsTable: response.data})
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
   render() {
-    
-    
     const arr = [classes.Panel, classes.PanelPrimary];
     const arr1 = arr.join(' ');
     const arrGreen = [classes.Panel, classes.PanelGreen];
@@ -32,96 +86,88 @@ state = {
         let date = new Date(start);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        let startDate = [day, mnth,date.getFullYear()].join("/");
+        var startDate = [day, mnth,date.getFullYear()].join("/");
         console.log(startDate);
+        //console.log(this.state.startDate);
       }
       if(end){
         let date = new Date(end);
         let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
         let day = ("0" + date.getDate()).slice(-2);
-        let endDate = [day, mnth,date.getFullYear()].join("/");
+        var endDate = [day, mnth,date.getFullYear()].join("/");
         console.log(endDate);
+        //console.log("111111",this.state.endDate);
+      }
+      if (start && end) {
+        this.setState({"startDate": startDate, "endDate": endDate});
+        /*setTimeout(()=>{console.log("1111122", this.state.startDate);
+        console.log("2222333", this.state.endDate);},500)*/
+        
+        axios.get('/api/dashboard/job_scores?start='+startDate+'&end='+endDate)
+        .then((response) => {
+          if(response.data){
+            this.setState({jobStatusObj: response.data})
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    
+        axios.get('/api/dashboard/job_history/?start='+startDate+'&end='+endDate)
+        .then((response) => {
+          if(response.data){
+            this.setState({jobsTable: response.data})
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        }); 
       }
     }
+    
+    if(this.state.jobStatusObj !== null){
+      var jobStatusObj1 = Object.keys(this.state.jobStatusObj).map((key, index) => {
+        return <JobStatus key={key} totalJobs={ this.state.jobStatusObj[key]} jobStatus={key} myClass={arr1} myChildClass={classes.PanelHeading} />;
+      });
+    }
+    
     return (
 <div className={classes.App}>
         {/* Page Wrapper */}
         <div>
           {/* Sidebar */}
-          <Loader loaded={this.state.loaded}>
+         {/* <Loader loaded={this.state.loaded}>
             <h1>thiravi</h1>
-          </Loader>
+    </Loader>*/}
           {/* End of Sidebar */}
           {/* Content Wrapper */}
           <div id="content-wrapper" className="d-flex flex-column">
             {/* Main Content */}
-            <div id="content">
-              {/* Topbar */}
-              <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style={{width:'100%',height:'10%'}}>
-                {/* Sidebar Toggle (Topbar) */}
-                <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
-                  <i className="fa fa-bars" />
-                </button>
-                {/* Topbar Search */}
-                <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                  <div className="input-group">
-                    <input type="text" className="form-control bg-light border-0 small" placeholder="Search for Job Status..." aria-label="Search" aria-describedby="basic-addon2" />
-                    <div className="input-group-append">
-                      <button className="btn btn-primary" type="button">
-                        <i className="fas fa-search fa-sm" />
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                {/* Topbar Navbar */}
-                <ul className="navbar-nav ml-auto">
-                  {/* Nav Item - Search Dropdown (Visible Only XS) */}
-                  <li className="nav-item dropdown no-arrow d-sm-none">
-                    <a href="index.html" className="nav-link dropdown-toggle" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i className="fas fa-search fa-fw" />
-                    </a>
-                    {/* Dropdown - Messages */}
-                    <div className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                      <form className="form-inline mr-auto w-100 navbar-search">
-                        <div className="input-group">
-                          <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                          <div className="input-group-append">
-                            <button className="btn btn-primary" type="button">
-                              <i className="fas fa-search fa-sm" />
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </li>
-                  <div className="topbar-divider d-none d-sm-block" />
-                  {/* Nav Item - User Information */}
-                  <li className="nav-item dropdown no-arrow">
-                    <a href="index.html" className="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span className="mr-2 d-none d-lg-inline text-gray-600 small">Thiraviaraj B</span>
-                      <img alt="circle" className="img-profile rounded-circle" src="https://source.unsplash.com/ZHvM3XIOHoE/60x60" />
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-              {/* End of Topbar */}
+            <div id="content" style={{marginTop: '15px'}}>
               {/* Begin Page Content */}
               <div className="container-fluid">
                 {/* Page Heading */}
                 <div className="d-sm-flex align-items-center justify-content-between mb-4">
                   <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
-                  <RangeDatePicker startPlaceholder="Start Date" endPlaceholder="End Date" dateFormat="DD/MM/YYYY" onChange={(start, end) => onChangeHandler(start,end)} />
+                  <RangeDatePicker 
+                    startDay={this.state.startDate} 
+                    endDay={this.state.endDate} 
+                    startPlaceholder="Start Date" 
+                    endPlaceholder="End Date" 
+                    dateFormat="DD/MM/YYYY" 
+                    onChange={(start, end) => onChangeHandler(start,end)} />
                   <a href="index.html" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50" /> Generate Report</a>
                 </div>
                 {/* Content Row */}
                 <div className="row">
-                  <JobStatus totalJobs="18" jobStatus="Executed" myClass={arr1} myChildClass={classes.PanelHeading} />
+                {jobStatusObj1}
+                  {/*<JobStatus totalJobs="18" jobStatus="Executed" myClass={arr1} myChildClass={classes.PanelHeading} />
                   <JobStatus totalJobs="0" jobStatus="Running" myClass={arr1} myChildClass={classes.PanelHeading} />
                   <JobStatus totalJobs="0" jobStatus="Cancelled" myClass={arrGreen1} myChildClass={classes.PanelHeading} />
                   <JobStatus totalJobs="8" jobStatus="Failed" myClass={arrRed1} myChildClass={classes.PanelHeading} />
                   <JobStatus totalJobs="1" jobStatus="Halted" myClass={arrRed1} myChildClass={classes.PanelHeading} />
                   <JobStatus totalJobs="9" jobStatus="Succeeded" myClass={arrGreen1} myChildClass={classes.PanelHeading} />
-                </div>
+            */} </div>
                 <div className="row">
                   {/* Earnings (Monthly) Card Example */}
                   <div className="col-xl-3 col-md-6 mb-4">
@@ -215,7 +261,7 @@ state = {
                       </div>
                       <div className="card-body">
                         {/* 3v Data Table */}
-                        <DataTable1 />
+                        <DataTable1 jobsTableRows={this.state.jobsTable}/>
                       </div>
                     </div>
                   </div>

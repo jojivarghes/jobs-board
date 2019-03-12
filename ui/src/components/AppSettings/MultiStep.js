@@ -16,7 +16,7 @@ const getNavStyles = (indx, length) => {
 }
 
 const getButtonsState = (indx, length) => {
-  if (indx > 0 && indx < length - 1) {
+  if (indx > 0 && indx < length) {
     return {
       showPreviousBtn: true,
       showNextBtn: true
@@ -37,19 +37,18 @@ const getButtonsState = (indx, length) => {
 export default function MultiStep(props) {
   const [stylesState, setStyles] = useState(getNavStyles(0, props.steps.length))
   const [compState, setComp] = useState(0)
+  const [source_id, setSourceID] = useState(0)
   const [buttonsState, setButtons] = useState(getButtonsState(0, props.steps.length))
   
   // const [tables, settables] = useState([])
   function setStepState(indx) {
     if(indx === 1) {
-      console.log(props.myData)
-      axios.post('/api/sources', props.myData)
+      axios.post('/api/sources', {data: props.myData})
       .then((response) => {
-        axios.get('/api/sources/1/tables')
+        // let source_id = setSourceID(response.source_id); This should be enabled for live API
+        source_id = 1;
+        axios.get('/api/sources/' + source_id + '/tables')
         .then((response) => {
-          console.log(response.data)
-          // this.setState({tables:response.data});
-          // settables(response.data);
           props.setTable(response.data);
           setWizardPage(indx);
         })
@@ -60,6 +59,17 @@ export default function MultiStep(props) {
       .catch((error) => {
         console.log(error);
       })
+    } else if(indx === 4) {
+      alert("submmitted");
+      var req = {
+        "map": props.maps,
+        "where": props.whereTxt,
+        "joins": props.joinTxt,
+        "sql": props.previewFinalQuery
+      }
+      axios.post('/api/sources'+source_id+'/conf', {data: req}).then((response) => {
+        alert("Success");
+      });
     } else {
       setWizardPage(indx)
     }

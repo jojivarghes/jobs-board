@@ -13,13 +13,13 @@ export class StepOne extends Component {
         <div className='row' style={{margin: '10px 0 0 0'}}>
           <div className="six columns">
             <label htmlFor="source">Select Source</label>
-            <select className="u-full-width" id="source" value={this.props.myData.selectedOption} onChange={this.props.handleChange} autoFocus>
+            <select className="u-full-width" id="source" value={this.props.myData.type} onChange={this.props.handleChange} autoFocus>
               <option value="">Select Source</option>
               {sourceOptions}
             </select>
           </div>
         </div>
-        {this.props.myData.selectedOption ?
+        {this.props.myData.type ?
         <section>
         <div className='row' style={{margin: '10px 0 0 0'}}>  
           <div className='six columns'>
@@ -29,7 +29,7 @@ export class StepOne extends Component {
               placeholder='User Name'
               type='text'
               onChange={this.props.handleUserNameChanged}
-              value={this.props.myData.userName}
+              value={this.props.myData.username}
               autoFocus
             />
           </div>
@@ -54,7 +54,7 @@ export class StepOne extends Component {
               placeholder='DB Name'
               type='text'
               onChange={this.props.handleDbNameChanged}
-              value={this.props.myData.dbName}
+              value={this.props.myData.dbname}
             />
           </div>
         </div>
@@ -77,7 +77,6 @@ export class StepOne extends Component {
               className='u-full-width'
               placeholder='Port'
               type='text'
-              disabled
               onChange={this.props.handlePortChanged}
               value={this.props.myData.port}
             />

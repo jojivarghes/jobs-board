@@ -1,4 +1,7 @@
 Django==2.1.7
 djangorestframework==3.9.1
-mysqlclient==1.4.2.post1
+mysqlclient
 pytz==2018.9
+django-cors-headers
+pyodbc
+

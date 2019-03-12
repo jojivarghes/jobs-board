@@ -15,9 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
 from jb_dashboard.views import index
+from django.contrib.staticfiles import views
+from django.urls import re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index')
+    path('', index),
+    path('api/dashboard/', include('jb_dashboard.urls')),
+    path('api/sources/', include('jb_settings.urls')),
+    re_path(r'(?P<path>.*)$', views.serve),
 ]

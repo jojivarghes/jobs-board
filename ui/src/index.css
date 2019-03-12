@@ -20,3 +20,21 @@ code {
 .white-color {
   color: white;
 }
+
+.active {
+  color: white;
+}
+
+.droppableDiv > div > div {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.droppableBlueDiv > div > div {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.tenPadding {
+  padding: 10px;
+}

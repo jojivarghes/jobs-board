@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class JbSettingsConfig(AppConfig):
+class Jobdashboardapp2Config(AppConfig):
     name = 'jb_settings'

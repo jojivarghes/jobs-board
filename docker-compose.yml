@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  target-mysql:
+    image: mysql:8.0.2
+    environment:
+      MYSQL_DATABASE: jobs_board
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+
+  web:
+    restart: always
+    build: .
+    command: >
+      bash -c " python3.6 manage.py makemigrations
+      && python3.6 manage.py migrate
+      && python3.6 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+      - jobs_board_conf:/conf
+    ports:
+      - "8000:8000"
+    depends_on:
+      - target-mysql
+
+volumes:
+  jobs_board_conf:

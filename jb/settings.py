@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
     'jb_dashboard',
     'jb_settings'
 ]
@@ -49,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'jb.urls'
@@ -71,27 +75,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'jb.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'jobs_board',
+    'USER': 'root',
+    'PASSWORD': 'root',
+    'HOST': 'target-mysql',
+    'PORT': '3306',
+  }
+}
+#
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'jobs_board',
+#         'USER': 'jobs_user',
+#         'PASSWORD': 'awesomePassword!',
+#         'HOST': 'target-mysql',
+#         'PORT': '3306',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobs_board',
-        'USER': 'jobs_user',
-        'PASSWORD': 'Change1t!',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -129,10 +133,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static_0/'
 
 STATICFILES_DIRS = [
-    os.path.join(UI_BUILD_DIR, 'static'),
+    os.path.join(UI_BUILD_DIR),
 ]
 
 CONF_DIR = os.path.expanduser('~/config')

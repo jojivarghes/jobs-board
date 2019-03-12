@@ -22,6 +22,9 @@ const jobStatus = (props) => {
     else if(props.jobStatus === "Succeeded") {
         faIcon = <FaThumbsUp className={classes.Fa5x} />;
     }
+    else if(props.jobStatus === "success") {
+        faIcon = <FaThumbsUp className={classes.Fa5x} />;
+    }
     return (
         <div className="col-lg-2">
             <div className={props.myClass}>
@@ -32,7 +35,7 @@ const jobStatus = (props) => {
                         </div>
                         <div className="col-xs-9 text-right">
                             <div className={classes.Huge}>{props.totalJobs}</div>
-                            <div>{props.jobStatus}</div>
+                            <div style={{textTransform: 'capitalize'}}>{props.jobStatus}</div>
                         </div>
                     </div>
                 </div>

@@ -11,6 +11,7 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import axios from './axios-jobs';
 var Loader = require('react-loader');
 class App extends Component {
+
 constructor () {
   super();
   this.state = {
@@ -21,7 +22,9 @@ constructor () {
     jobsTable: [],
     jobsChart: []
   };
-  
+}
+componentDidMount(){
+  document.title = "Jobs Dashboard"
 }
 toggleMenu() {
   var css = (this.state.menuCollapsed) ? "toggled" : "";

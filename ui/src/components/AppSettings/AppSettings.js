@@ -9,6 +9,7 @@ import axios from '../../axios-jobs';
 
 class AppSettings extends React.Component {
         state = { 
+            id: 0,
             username: '', 
             password: '',
             host: '',
@@ -21,7 +22,7 @@ class AppSettings extends React.Component {
         };
 
     componentDidMount(){
-        axios.get('/api/sources')
+        axios.get('/api/sources/')
         .then((response) => {
           this.setState({options:response.data.sources});
         })
@@ -31,8 +32,8 @@ class AppSettings extends React.Component {
       }
       
       handleTable = (val) => {
-        if (val)
-          this.setState({table: val});
+        if (val && val.tables)
+          this.setState({table: val.tables});
       }
 
       handleUserNameChanged = (event) => {
@@ -121,8 +122,12 @@ class AppSettings extends React.Component {
           return this.setSelectQuery() + " " + this.state.joinTxt;
         }
       }
+      setID = (id) => {
+        this.setState({id: id});
+      }
       createPostMap = () => {
-         return [   
+        if(this.state.pageTwo[0]) {
+          return [   
             [
               "table_1.job_id",
               this.state.pageTwo[0]['job_id']
@@ -144,6 +149,7 @@ class AppSettings extends React.Component {
               this.state.pageTwo[0]['comments'] ? this.state.pageTwo[0]['comments']: ""
             ]
           ]
+        }
       }
 
       render(){
@@ -155,7 +161,7 @@ class AppSettings extends React.Component {
                                 handleHostChanged = {this.handleHostChanged}
                                 handlePortChanged = {this.handlePortChanged}
                                 handleChange = {this.handleChange}/>},
-            {name: 'Property Mapping', component: <StepTwo handlePageTwoData={this.handlePageTwoData} table={this.state.table}/>},
+            {name: 'Property Mapping', component: <StepTwo id={this.state.id} handlePageTwoData={this.handlePageTwoData} table={this.state.table}/>},
             {name: 'Form SQL Query', component: <StepThree data={this.setSelectQuery()} whereTxt={this.state.whereTxt} joinTxt={this.state.joinTxt} handleWhereChange={this.handleWhereChange} handleJoinChange={this.handleJoinChange} />},
             {name: 'Preview and Confirm', component: <StepFour previewFinalQuery={this.formFinalQuery()}/>}
           ];
@@ -170,7 +176,7 @@ class AppSettings extends React.Component {
                         <h6 className="m-0 font-weight-bold text-primary">Job Configurations</h6>
                       </div>
                       <div className="card-body">
-                      <Multistep showNavigation={true} steps={steps} myData={this.state} setTable={this.handleTable} previewFinalQuery={this.formFinalQuery()} joinTxt={this.state.joinTxt} maps={this.createPostMap()} whereTxt={this.state.whereTxt} />
+                      <Multistep setID={this.setID} showNavigation={true} steps={steps} myData={this.state} setTable={this.handleTable} previewFinalQuery={this.formFinalQuery()} joinTxt={this.state.joinTxt} maps={this.createPostMap()} whereTxt={this.state.whereTxt} />
                       </div>
                     </div>
                   </div>

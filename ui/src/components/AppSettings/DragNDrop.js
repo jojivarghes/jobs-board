@@ -75,9 +75,9 @@ export default class DragNDrop extends React.Component{
     }
 
     button1Handler (tableName) {
-        axios.get("/api/sources/{id}/tables/" +tableName+"/columns")
+        axios.get("/api/sources/" + this.props.id + "/tables/" +tableName+"/columns")
         .then((response) => {
-          let colObj = {tableName: tableName, columns: response.data};
+          let colObj = {tableName: tableName, columns: response.data.columns};
           this.setState({columns:colObj});
         })
         .catch((error) => {

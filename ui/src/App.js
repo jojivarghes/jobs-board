@@ -96,7 +96,7 @@ componentDidMount(){
     const arrRed = [classes.Panel, classes.PanelRed];
     const arrRed1 = arrRed.join(' ');
     const syncHandler = () => {
-      axios.get('/api/sources/sync')
+      axios.get('/api/sources/sync/')
         .then((response) => {
           if(response.data){
           }

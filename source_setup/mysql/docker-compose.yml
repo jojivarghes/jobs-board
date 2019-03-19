@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  ext_mysql:
+    build: .
+    environment:
+      MYSQL_DATABASE: TestDB
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "33306:3306"
+    volumes:
+    - .:/docker-entrypoint-initdb.d/:ro
+    - ./mysql.conf:/etc/mysql/my.cnf

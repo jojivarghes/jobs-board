@@ -97,9 +97,8 @@ componentDidMount(){
     const arrRed1 = arrRed.join(' ');
     const syncHandler = () => {
       axios.get('/api/sources/sync/')
-        .then((response) => {
-          if(response.data){
-          }
+        .then(() => {
+            window.location.reload();
         })
         .catch((error) => {
           console.log(error);

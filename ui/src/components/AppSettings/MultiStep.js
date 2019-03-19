@@ -48,7 +48,7 @@ export default function MultiStep(props) {
         props.setID(response.data.source_id);
         setSourceID(response.data.source_id); //This should be enabled for live API
         // source_id = 1;
-        axios.get('/api/sources/' + source_id + '/tables')
+        axios.get('/api/sources/' + response.data.source_id + '/tables')
         .then((response) => {
           props.setTable(response.data);
           setWizardPage(indx);
